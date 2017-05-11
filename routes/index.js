@@ -3,7 +3,7 @@ var router = express.Router();
 var fs = require('fs');
 var _ = require('lodash');
 
-// Parse dictionary.txt into memory on app startup.
+// Parse dictionary.txt the data store on app startup.
 // writing syncronously as it might take long. Sorry for the memory
 var dictionary = {};
 dictionary["words"] = fs.readFileSync('dictionary.txt').toString().split("\n");
@@ -13,6 +13,7 @@ router.all('/*', function(req, res, next) {
 	next();
 });
 
+// Get anagrams for given word
 router.get('/anagrams/:word.json', function(req, res, next){
 	// Set anagrams object
 	var anagrams = {
@@ -45,7 +46,7 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'ANAGRAMS' });
 });
 
-// What is the point of this? Just a different endpoint that stores words?
+// Post JSON array of words into the data store
 router.post('/words.json', function(req, res, next) {
 	// Add to dictionary based on lowercasing match and keeping the original word in the dictionary
 	dictionary.words = _.unionBy(dictionary.words, req.body.words, _.lowerCase);
@@ -54,7 +55,6 @@ router.post('/words.json', function(req, res, next) {
 });
 
 // Deletes a single word from the data store.
-// A single word or any word that matches?
 router.delete('/words/:word.json', function(req, res, next) {
 	// Remove requested word from dictionary 
 	_.remove(dictionary.words, function(n) {
@@ -64,6 +64,7 @@ router.delete('/words/:word.json', function(req, res, next) {
 	res.send();
 });
 
+// Delete all words in the data store
 router.delete('/words.json', function(req, res, next) {
 	dictionary.words = [];
 	res.status(204);
