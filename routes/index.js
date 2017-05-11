@@ -36,6 +36,7 @@ router.get('/anagrams/:word.json', function(req, res, next){
 			}
 		}
 	}
+	res.status(200);
 	res.send(anagrams);
 });
 
