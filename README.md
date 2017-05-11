@@ -63,4 +63,4 @@ curl -i -X DELETE http://localhost:3000/words/read.json
 
 ##### Third, sorry for taking so long with! I had planned to do this this past weekend but I had a huge wrench thrown in my weekend. Long Story we can chat about. 
 
-##### Fourth, I really enjoyed doing this and honestly wish I could do the optional stuff but I really need to get this out of my hands so I can breath for a minute!
+##### Fourth, I really enjoyed doing this and honestly wish I could do the optional stuff but I really need to get this out of my hands so I can breath for a minute! Thanks!
