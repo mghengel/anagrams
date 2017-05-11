@@ -4,15 +4,15 @@ var fs = require('fs');
 var _ = require('lodash');
 
 // Parse dictionary.txt into memory on app startup.
-// writing syncronously as it might take long
+// writing syncronously as it might take long. Sorry for the memory
 var dictionary = {};
 dictionary["words"] = fs.readFileSync('dictionary.txt').toString().split("\n");
 
+// Handles all router requests that come in
 router.all('/*', function(req, res, next) {
 	next();
 });
 
-/* GET home page. */
 router.get('/anagrams/:word.json', function(req, res, next){
 	// Set anagrams object
 	var anagrams = {
@@ -41,7 +41,7 @@ router.get('/anagrams/:word.json', function(req, res, next){
 
 // Nothing to see here
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: 'ANAGRAMS' });
 });
 
 // What is the point of this? Just a different endpoint that stores words?
