@@ -3,39 +3,12 @@ var router = express.Router();
 var fs = require('fs');
 var _ = require('lodash');
 
-
-// Old code to store words object
-// var words = {};
-
-// Old code to read json object from file
-// Read words.json function
-// var readFile = function(callback){
-// 	fs.readFile('words.json', 'utf8', function(err, data) {
-// 		if (err) callback(err)
-// 		callback(data)
-// 	});
-// };
-
-// Old function to write json object to file
-// Write words json function
-// var writeFile = function(obj, callback){
-// 	fs.writeFile('words.json', JSON.stringify(obj), 'utf8', function(err){
-// 		if (err) callback(err)
-// 		callback(obj)
-// 	});
-// };
-
 // Parse dictionary.txt into memory on app startup.
 // writing syncronously as it might take long
 var dictionary = {};
 dictionary["words"] = fs.readFileSync('dictionary.txt').toString().split("\n");
 
 router.all('/*', function(req, res, next) {
-	// Not needed anymore
-	// readFile(function(data){
-	// 	words = JSON.parse(data);
-	// 	next();
-	// });
 	next();
 });
 
@@ -63,7 +36,6 @@ router.get('/anagrams/:word.json', function(req, res, next){
 			}
 		}
 	}
-	console.log(anagrams);
 	res.send(anagrams);
 });
 
@@ -76,45 +48,25 @@ router.get('/', function(req, res, next) {
 router.post('/words.json', function(req, res, next) {
 	// Add to dictionary based on lowercasing match and keeping the original word in the dictionary
 	dictionary.words = _.unionBy(dictionary.words, req.body.words, _.lowerCase);
-	console.log(dictionary)
 	res.status(201);
 	res.send();
-
-	// Old code to write .words.json endpoint before I knew what it was for!!!
-	// writeFile(req.body, function(response) {
-	// 	res.status(201);
-	// 	res.send(response)
-	// });
 });
 
 // Deletes a single word from the data store.
 // A single word or any word that matches?
 router.delete('/words/:word.json', function(req, res, next) {
+	// Remove requested word from dictionary 
 	_.remove(dictionary.words, function(n) {
 		return n.toLowerCase() == req.params.word.toLowerCase();
 	});
-	console.log(dictionary);
 	res.status(200);
 	res.send();
-	
-	// Old code to write the new words object with word deleted
-	// writeFile(words, function(response){
-	// 	res.send(response)
-	// });
-	
 });
 
 router.delete('/words.json', function(req, res, next) {
 	dictionary.words = [];
 	res.status(204);
 	res.send();
-
-	// Old code to write words.json to blank array
-	// words.words = [];
-	// writeFile(words, function(response) {
-	// 	res.status(204);
-	// 	res.send(response);
-	// });
 });
 
 
